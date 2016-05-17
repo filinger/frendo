@@ -6,6 +6,7 @@
 </head>
 
 <body>
+<div th:text="${elapsed}"></div>
 <li th:each="user : ${users}" th:text="${user.name}">User name here...</li>
 </body>
 
