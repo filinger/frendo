@@ -9,4 +9,5 @@ public class FrendoApplication {
     public static void main(String[] args) {
         SpringApplication.run(FrendoApplication.class, args);
     }
+
 }
