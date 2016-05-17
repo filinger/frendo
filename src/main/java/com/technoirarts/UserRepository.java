@@ -1,12 +1,6 @@
 package com.technoirarts;
 
-import org.springframework.data.repository.Repository;
+import org.springframework.data.repository.CrudRepository;
 
-import java.util.List;
-
-public interface UserRepository extends Repository<User, Long> {
-
-    List<User> findAll();
-
-    User findById(Long id);
+public interface UserRepository extends CrudRepository<User, Long> {
 }

@@ -5,8 +5,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.List;
-
 @Controller
 public class UserController {
 
@@ -15,7 +13,7 @@ public class UserController {
 
     @RequestMapping("/users")
     public Model users(Model model) {
-        List<User> users = userRepository.findAll();
+        Iterable<User> users = userRepository.findAll();
         model.addAttribute("users", users);
         return model;
     }
