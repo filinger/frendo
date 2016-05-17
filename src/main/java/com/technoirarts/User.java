@@ -11,14 +11,56 @@ public class User implements Serializable {
 
     @Id
     @GeneratedValue
-    public Long id;
+    private Long id;
 
     @Column(nullable = false)
-    public String name;
+    private String name;
 
     @Column(nullable = false)
-    public String gender;
+    private String gender;
 
     @Column(nullable = false)
-    public String city;
+    private String city;
+
+    public User() {
+    }
+
+    public User(Long id, String name, String gender, String city) {
+        this.id = id;
+        this.name = name;
+        this.gender = gender;
+        this.city = city;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
 }

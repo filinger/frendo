@@ -11,9 +11,13 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
+    private Stopwatch stopwatch = new Stopwatch();
+
     @RequestMapping("/users")
     public Model users(Model model) {
+        stopwatch.start();
         Iterable<User> users = userRepository.findAll();
+        model.addAttribute("elapsed", stopwatch.elapsed());
         model.addAttribute("users", users);
         return model;
     }
