@@ -4,9 +4,6 @@ public class Stopwatch {
 
     private long startTime = System.nanoTime();
 
-    public Stopwatch() {
-    }
-
     public void start() {
         startTime = System.nanoTime();
     }
