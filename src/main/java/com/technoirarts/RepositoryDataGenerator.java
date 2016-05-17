@@ -31,15 +31,16 @@ public class RepositoryDataGenerator {
     @Autowired
     private UserRepository userRepository;
 
+    private Stopwatch stopwatch = new Stopwatch();
+
     @PostConstruct
     private void generateUsers() {
         LOG.info("Generating {} users...", userAmount);
-        long startTime = System.nanoTime();
+        stopwatch.start();
         for (int i = 0; i < userAmount; ++i) {
             userRepository.save(generateRandomUser());
         }
-        long elapsedTime = System.nanoTime() - startTime;
-        LOG.info("Users generated successfully, took about {} ms.", elapsedTime / 1000000);
+        LOG.info("Users generated successfully, took about {} ms.", stopwatch.elapsed());
     }
 
     private User generateRandomUser() {
