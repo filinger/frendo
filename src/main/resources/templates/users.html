@@ -3,11 +3,88 @@
 <head>
     <title>Getting Started: Serving Web Content</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/style.css}"/>
 </head>
 
 <body>
-<div th:text="${elapsed}"></div>
-<li th:each="user : ${users}" th:text="${user.name}">User name here...</li>
+
+<div>
+    <img th:src="@{/images/logo.png}" th:alt-title="#{title.logo}" />
+</div>
+
+<div>
+
+    <h2 th:text="#{title.find}">title.find</h2>
+
+    <form th:action="@{/users}" th:method="post">
+
+        <fieldset>
+
+            <legend th:text="#{find.user}">find.user</legend>
+
+            <div>
+                <label for="users">
+                    <span th:text="#{find.user.id}">find.user.id</span>
+                </label>
+                <input type="text" th:field="*{users}" />
+            </div>
+
+            <div class="submit">
+                <button type="submit" name="save" th:text="#{find.user.profile}">find.user.profile</button>
+            </div>
+
+        </fieldset>
+
+    </form>
+
+</div>
+
+<div class="userInfo" th:unless="${#lists.isEmpty(users)}">
+
+    <h2 th:text="#{title.user.info}">title.user.info</h2>
+
+    <table>
+        <thead>
+        <tr>
+            <th th:text="#{user.surname}">surname</th>
+            <th th:text="#{user.name}">name</th>
+            <th th:text="#{user.age}">age</th>
+            <th th:text="#{user.city}">city</th>
+            <th th:text="#{user.extra}">extra</th>
+            <th th:text="#{user.friends}">friends</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user : ${users}">
+            <td th:text="${user.name}">name</td>
+            <!--
+            <td th:text="${user.surname}">surname</td>
+            <td th:text="${user.age}">age</td>
+            <td th:text="${user.city}">city</td>
+            <td th:text="${user.extra}">extra</td>
+            -->
+            <!--
+            <td>
+                <table>
+                    <tbody>
+                    <tr>
+                        <th th:text="#{friend.surname}">surname</th>
+                        <th th:text="#{friend.name}">name</th>
+                    </tr>
+                    <tr th:each="friend : ${friends}">
+                        <td th:text="${friend.surname}">surname</td>
+                        <td th:text="${friend.name}">name</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </td>
+            -->
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+
 </body>
 
 </html>
