@@ -44,10 +44,12 @@ public class RepositoryDataGenerator {
     }
 
     private User generateRandomUser() {
-        String name = getRandomName() + " " + getRandomName();
-        String gender = RAND.nextBoolean() ? "Male" : "Female";
+        String surname = getRandomName();
+        String name = getRandomName();
+        Integer age = (int)(RAND.nextInt(100));
         String city = getRandomName();
-        return new User(null, name, gender, city);
+        String extra = getRandomName() + getRandomName() + getRandomName();
+        return new User(null, surname, name, age, city, extra);
     }
 
     private String getRandomName() {

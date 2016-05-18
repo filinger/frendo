@@ -30,6 +30,7 @@ form div {
 }
 
 form div > label {
+    width: 180px;
     display: block;
     float: left;
     text-align: right;
