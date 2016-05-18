@@ -13,9 +13,8 @@ public class UserController {
 
     private static final Logger LOG = LoggerFactory.getLogger(UserController.class);
 
-    // TODO Handle exception in case of reddis is absent.
     @Autowired
-    private UserRepository userRepository;
+    private CachedUserRepository userRepository;
 
     private Stopwatch stopwatch = new Stopwatch();
 
@@ -44,5 +43,4 @@ public class UserController {
         LOG.info("Took about {} ms.", stopwatch.elapsed());
         return "user";
     }
-
 }
