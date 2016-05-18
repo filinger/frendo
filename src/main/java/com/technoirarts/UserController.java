@@ -5,11 +5,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class UserController {
@@ -47,13 +44,4 @@ public class UserController {
         return "users";
     }
 
-    /*@RequestMapping(value = "/user/{id}")
-    @ResponseBody
-    public User user(@PathVariable("id") Long id) {
-        LOG.info("Loading user {}...", id);
-        stopwatch.start();
-        User user = userRepository.findOne(id);
-        LOG.info("Took about {} ms.", stopwatch.elapsed());
-        return user;
-    }*/
 }

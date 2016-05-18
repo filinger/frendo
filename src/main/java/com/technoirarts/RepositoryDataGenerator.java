@@ -46,7 +46,7 @@ public class RepositoryDataGenerator {
     private User generateRandomUser() {
         String surname = getRandomName();
         String name = getRandomName();
-        Integer age = (int)(Math.random()*100);
+        Integer age = (int)(RAND.nextInt(100));
         String city = getRandomName();
         String extra = getRandomName() + getRandomName() + getRandomName();
         return new User(null, surname, name, age, city, extra);
