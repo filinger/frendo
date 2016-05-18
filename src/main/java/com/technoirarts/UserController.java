@@ -19,7 +19,7 @@ public class UserController {
 
     private Stopwatch stopwatch = new Stopwatch();
 
-    @RequestMapping(value="/user/all")
+    @RequestMapping(value = "/user/all")
     public String showAllUsers(Model model) {
         stopwatch.start();
         Iterable<User> users = userRepository.findAll();
@@ -28,7 +28,7 @@ public class UserController {
         return "users_all";
     }
 
-    @RequestMapping(value="/user")
+    @RequestMapping(value = "/user")
     public String showForm(Model model) {
         stopwatch.start();
         model.addAttribute("user", new User());
@@ -36,7 +36,7 @@ public class UserController {
         return "users";
     }
 
-    @RequestMapping(value="/user", params="findUser")
+    @RequestMapping(value = "/user", params = "findUser")
     public String showUser(@ModelAttribute User user, Model model) {
         LOG.info("Loading user {}...", user.getId());
         stopwatch.start();
