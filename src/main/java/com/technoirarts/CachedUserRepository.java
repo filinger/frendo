@@ -42,6 +42,7 @@ public class CachedUserRepository {
         return null;
     }
 
+    // TODO: cache all users via Redis scan/keys iterator?
     public Iterable<User> findAll() {
         return userRepository.findAll();
     }
