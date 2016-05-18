@@ -25,7 +25,7 @@ public class UserController {
         Iterable<User> users = userRepository.findAll();
         model.addAttribute("elapsed", stopwatch.elapsed());
         model.addAttribute("users", users);
-        return "users_all";
+        return "user_all";
     }
 
     @RequestMapping(value = "/user")
@@ -33,7 +33,7 @@ public class UserController {
         stopwatch.start();
         model.addAttribute("user", new User());
         model.addAttribute("elapsed", stopwatch.elapsed());
-        return "users";
+        return "user";
     }
 
     @RequestMapping(value = "/user", params = "findUser")
@@ -42,7 +42,7 @@ public class UserController {
         stopwatch.start();
         model.addAttribute("users", userRepository.findOne(user.getId()));
         LOG.info("Took about {} ms.", stopwatch.elapsed());
-        return "users";
+        return "user";
     }
 
 }
