@@ -16,22 +16,30 @@ public class User implements Serializable {
     private Long id;
 
     @Column(nullable = false)
+    private String surname;
+
+    @Column(nullable = false)
     private String name;
 
     @Column(nullable = false)
-    private String gender;
+    private Integer age;
 
     @Column(nullable = false)
     private String city;
 
+    @Column(nullable = false)
+    private String extra;
+
     public User() {
     }
 
-    public User(Long id, String name, String gender, String city) {
+    public User(Long id, String surname, String name, Integer age, String city, String extra) {
         this.id = id;
+        this.surname = surname;
         this.name = name;
-        this.gender = gender;
+        this.age = age;
         this.city = city;
+        this.extra = extra;
     }
 
     public Long getId() {
@@ -42,6 +50,14 @@ public class User implements Serializable {
         this.id = id;
     }
 
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
     public String getName() {
         return name;
     }
@@ -50,12 +66,12 @@ public class User implements Serializable {
         this.name = name;
     }
 
-    public String getGender() {
-        return gender;
+    public Integer getAge() {
+        return age;
     }
 
-    public void setGender(String gender) {
-        this.gender = gender;
+    public void setAge(Integer age) {
+        this.age = age;
     }
 
     public String getCity() {
@@ -65,4 +81,13 @@ public class User implements Serializable {
     public void setCity(String city) {
         this.city = city;
     }
+
+    public String getExtra() {
+        return extra;
+    }
+
+    public void setExtra(String extra) {
+        this.extra = extra;
+    }
+
 }
