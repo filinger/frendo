@@ -13,6 +13,7 @@ final public class UserSpecifications {
     static Specification<User> findUsers(String surname, String name, Integer age, String city, String extra) {
 
         List<Predicate> predicates = new ArrayList<>();
+
         // TODO: find better way to do vreate dynamic Predicate.
         return (root, query, cb) -> {
             if (!surname.isEmpty()) predicates.add(cb.equal(root.get(User_.surname), surname));
