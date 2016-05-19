@@ -5,9 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class UserController {
@@ -17,16 +15,10 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
-    private Stopwatch stopwatch = new Stopwatch();
+    @Autowired
+    private CachedUserRepository cachedUserRepository;
 
-    @RequestMapping(value = "/user/all")
-    public String showAllUsers(Model model) {
-        stopwatch.start();
-        Iterable<User> users = userRepository.findAll();
-        model.addAttribute("elapsed", stopwatch.elapsed());
-        model.addAttribute("users", users);
-        return "user_all";
-    }
+    private Stopwatch stopwatch = new Stopwatch();
 
     @RequestMapping(value = "/user")
     public String showForm(Model model) {
@@ -50,6 +42,25 @@ public class UserController {
         )));
         LOG.info("Took about {} ms.", stopwatch.elapsed());
         return "user";
+    }
+
+    @RequestMapping(value = "/user/{id}")
+    @ResponseBody
+    public User user(@PathVariable("id") Long id) {
+        LOG.info("Loading user {}...", id);
+        stopwatch.start();
+        User user = cachedUserRepository.findOne(id);
+        LOG.info("Took about {} ms.", stopwatch.elapsed());
+        return user;
+    }
+
+    @RequestMapping(value = "/user/all")
+    public String showAllUsers(Model model) {
+        stopwatch.start();
+        Iterable<User> users = cachedUserRepository.findAll();
+        model.addAttribute("elapsed", stopwatch.elapsed());
+        model.addAttribute("users", users);
+        return "user_all";
     }
 
 }
