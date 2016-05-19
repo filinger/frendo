@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class UserController {
@@ -14,7 +15,7 @@ public class UserController {
     private static final Logger LOG = LoggerFactory.getLogger(UserController.class);
 
     @Autowired
-    private CachedUserRepository userRepository;
+    private UserRepository userRepository;
 
     private Stopwatch stopwatch = new Stopwatch();
 
@@ -39,8 +40,21 @@ public class UserController {
     public String showUser(@ModelAttribute User user, Model model) {
         LOG.info("Loading user {}...", user.getId());
         stopwatch.start();
-        model.addAttribute("users", userRepository.findOne(user.getId()));
+        model.addAttribute("users", userRepository.findAll(UserSpecifications.findUsers(
+            user.getId(),
+            user.getSurname(),
+            user.getName(),
+            user.getAge(),
+            user.getCity(),
+            user.getExtra()
+        )));
         LOG.info("Took about {} ms.", stopwatch.elapsed());
         return "user";
     }
+
+    /*@RequestMapping(value = "/user")
+    public Iterable<User> findUsersByCriteria(@RequestParam("name") String name) {
+        return userRepository.getUserRepository().findAll((root, query, cb) -> cb.equal(root.get("name"), name));
+    }*/
+
 }

@@ -47,7 +47,7 @@ form div > input {
 }
 
 form div.submit {
-    background-color: #99cc33;
+    background-color: #af0d28;
     text-align: center;
     padding-top: 5px;
     padding-bottom: 5px;
@@ -77,7 +77,7 @@ div.userInfo > table > tbody > tr, div.userInfo > table > thead > tr {
 }
 
 div.userInfo > table th {
-    background-color: #99cc33;
+    background-color: #af0d28;
 }
 
 div.userInfo > table > tbody > tr > td > table {
