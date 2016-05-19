@@ -10,7 +10,7 @@ body {
     border: 1px solid #cccccc;
     margin: 20px auto;
     padding: 20px 20px;
-    width: 850px;
+    width: 950px;
 }
 
 h2 {
@@ -86,10 +86,20 @@ div.userInfo > table > tbody > tr > td > table {
 }
 
 div.userInfo > table > tbody > tr > td > table > tbody > tr> td {
-    background-color: #ddff77;
+    background-color: #bbbbbb;
     padding: 0px 5px;
 }
 
 div.userInfo > table > tbody > tr > td > table > tbody > tr> td:last-child {
     text-align: right;
+}
+
+div.counter {
+    margin: 16px 0 0 16px;
+}
+
+div.counter > span {
+    font-family: monospace;
+    padding: 5px;
+    border: 2px solid red;
 }

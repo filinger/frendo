@@ -12,9 +12,14 @@
 
         <div>
             <img th:src="@{/images/logo.png}" th:alt-title="#{title.logo}" />
+            <div class="counter">
+                <span th:text="${elapsed}">[time]</span>
+            </div>
         </div>
 
         <div>
+            <h2 th:text="#{title.find.id}">title.find.id</h2>
+
             <form th:action="@{/user/}">
 
                 <fieldset>
@@ -124,10 +129,6 @@
                     </tr>
                 </tbody>
             </table>
-        </div>
-
-        <div>
-            <span th:text="${elapsed}">[time]</span>
         </div>
 
     </body>

@@ -29,7 +29,7 @@ public class User implements Serializable {
     private String extra;
 
     @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name="customer_id")
+    @JoinColumn(name="friend_id")
     private List<Friend> friends;
 
     public User() {
