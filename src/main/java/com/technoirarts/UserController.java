@@ -21,7 +21,7 @@ public class UserController {
     private Stopwatch stopwatch = new Stopwatch();
 
     @RequestMapping(value = "/user")
-    public String showForm(@RequestParam("id") Long id, Model model) {
+    public String showForm(@RequestParam(name = "id", required = false) Long id, Model model) {
         stopwatch.start();
         model.addAttribute("users", cachedUserRepository.findOne(id));
         model.addAttribute("userRequestObject", new UserRequestObject());

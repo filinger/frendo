@@ -28,6 +28,11 @@ public class CachedUserRepository {
     private Stopwatch retryStopwatch = new Stopwatch();
 
     public User findOne(Long id) {
+
+        if (id == null) {
+            return null;
+        }
+
         User cached = tryGetCachedUser(id);
         if (cached != null) {
             return cached;
@@ -40,6 +45,7 @@ public class CachedUserRepository {
         }
 
         return null;
+
     }
 
     // TODO: cache all users via Redis scan/keys iterator?
