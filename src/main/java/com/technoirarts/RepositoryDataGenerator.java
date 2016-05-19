@@ -30,6 +30,8 @@ public class RepositoryDataGenerator {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private SolrUserRepository solrUserRepository;
 
     private Stopwatch stopwatch = new Stopwatch();
 
@@ -38,7 +40,9 @@ public class RepositoryDataGenerator {
         LOG.info("Generating {} users...", userAmount);
         stopwatch.start();
         for (int i = 0; i < userAmount; ++i) {
-            userRepository.save(generateRandomUser());
+            User user = generateRandomUser();
+            solrUserRepository.save(user);
+            //userRepository.save(user);
         }
         LOG.info("Users generated successfully, took about {} ms.", stopwatch.elapsed());
     }

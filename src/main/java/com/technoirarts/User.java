@@ -1,5 +1,7 @@
 package com.technoirarts;
 
+import org.apache.solr.client.solrj.beans.Field;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -28,6 +30,7 @@ public class User implements Serializable {
     private String city;
 
     @Column(nullable = false)
+    @Field
     private String extra;
 
     public User() {
