@@ -37,13 +37,7 @@ public class UserController {
 
     @RequestMapping(value = "/user", params = "findUser")
     public String showUser(@ModelAttribute UserRequestObject userRequestObject, Model model) {
-        Specification<User> spec = UserSpecifications.findUsers(
-            userRequestObject.getSurname(),
-            userRequestObject.getName(),
-            userRequestObject.getAge(),
-            userRequestObject.getCity(),
-            userRequestObject.getExtra()
-        );
+        Specification<User> spec = userRequestObject.buildSpecification();
         Iterable<User> users = profile("Retrieving users by specification", () -> userRepository.findAll(spec));
         model.addAttribute("users", users);
         model.addAttribute("elapsed", stopwatch.elapsed());
