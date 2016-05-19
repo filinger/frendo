@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 @Component
@@ -37,19 +39,29 @@ public class RepositoryDataGenerator {
     private void generateUsers() {
         LOG.info("Generating {} users...", userAmount);
         stopwatch.start();
-        for (int i = 0; i < userAmount; ++i) {
-            userRepository.save(generateRandomUser());
+        List<User> users = new ArrayList<>();
+        for (int i = 0; i < userAmount - 1; i++) {
+            users.add(generateRandomUser());
         }
+        for (User user : users) {
+            for (int i = 0; i < (RAND.nextInt(5) + 3); i++) {
+                Friend friend = new Friend();
+                friend.setUser(users.get(RAND.nextInt(users.size())));
+                user.getFriends().add(friend);
+            }
+        }
+        userRepository.save(users);
         LOG.info("Users generated successfully, took about {} ms.", stopwatch.elapsed());
     }
 
     private User generateRandomUser() {
         String surname = getRandomName();
         String name = getRandomName();
-        Integer age = (RAND.nextInt(100));
+        Integer age = (RAND.nextInt(61) + 10);
         String city = getRandomName();
         String extra = getRandomName() + getRandomName() + getRandomName();
-        return new User(null, surname, name, age, city, extra);
+        List<Friend> friends = new ArrayList<>();
+        return new User(null, surname, name, age, city, extra, friends);
     }
 
     private String getRandomName() {
