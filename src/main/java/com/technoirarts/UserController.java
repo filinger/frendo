@@ -31,22 +31,22 @@ public class UserController {
     @RequestMapping(value = "/user")
     public String showForm(Model model) {
         stopwatch.start();
-        model.addAttribute("user", new User());
+        model.addAttribute("userRequestObject", new UserRequestObject());
         model.addAttribute("elapsed", stopwatch.elapsed());
         return "user";
     }
 
     @RequestMapping(value = "/user", params = "findUser")
-    public String showUser(@ModelAttribute User user, Model model) {
-        LOG.info("Loading user {}...", user.getId());
+    public String showUser(@ModelAttribute UserRequestObject userRequestObject, Model model) {
+        LOG.info("Loading user {}...", userRequestObject.getId());
         stopwatch.start();
         model.addAttribute("users", userRepository.findAll(UserSpecifications.findUsers(
-            user.getId(),
-            user.getSurname(),
-            user.getName(),
-            user.getAge(),
-            user.getCity(),
-            user.getExtra()
+            userRequestObject.getId(),
+            userRequestObject.getSurname(),
+            userRequestObject.getName(),
+            userRequestObject.getAge(),
+            userRequestObject.getCity(),
+            userRequestObject.getExtra()
         )));
         LOG.info("Took about {} ms.", stopwatch.elapsed());
         return "user";
