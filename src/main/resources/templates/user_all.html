@@ -15,7 +15,6 @@
         </div>
 
         <div class="userInfo" th:unless="${#lists.isEmpty(users)}">
-
             <h2 th:text="#{title.user.info}">title.user.info</h2>
 
             <table>
@@ -31,21 +30,23 @@
                 </thead>
                 <tbody>
                 <tr th:each="user : ${users}">
-                    <td th:text="${user.surname}">surname</td>
-                    <td th:text="${user.name}">name</td>
-                    <td th:text="${user.age}">age</td>
-                    <td th:text="${user.city}">city</td>
-                    <td th:text="${user.extra}">extra</td>
+                    <td th:text="${user.surname}"></td>
+                    <td th:text="${user.name}"></td>
+                    <td th:text="${user.age}"></td>
+                    <td th:text="${user.city}"></td>
+                    <td th:text="${user.extra}"></td>
                     <td>
                         <table>
                             <tbody>
                             <tr>
                                 <th th:text="#{friend.surname}">surname</th>
                                 <th th:text="#{friend.name}">name</th>
+                                <th th:text="#{friend.link}">link</th>
                             </tr>
-                            <tr th:each="friend : ${friends}">
-                                <td th:text="${friend.surname}">surname</td>
-                                <td th:text="${friend.name}">name</td>
+                            <tr th:each="friend : ${user.friends}">
+                                <td th:text="${friend.user.surname}"></td>
+                                <td th:text="${friend.user.name}"></td>
+                                <td><a th:href="@{/user/?id={id}(id=${friend.user.id})}">link</a></td>
                             </tr>
                             </tbody>
                         </table>
@@ -53,7 +54,6 @@
                 </tr>
                 </tbody>
             </table>
-
         </div>
 
         <div>

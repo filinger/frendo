@@ -1,10 +1,8 @@
 package com.technoirarts;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 public class User implements Serializable {
@@ -30,16 +28,21 @@ public class User implements Serializable {
     @Column(nullable = false)
     private String extra;
 
+    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name="customer_id")
+    private List<Friend> friends;
+
     public User() {
     }
 
-    public User(Long id, String surname, String name, Integer age, String city, String extra) {
+    public User(Long id, String surname, String name, Integer age, String city, String extra, List<Friend> friends) {
         this.id = id;
         this.surname = surname;
         this.name = name;
         this.age = age;
         this.city = city;
         this.extra = extra;
+        this.friends = friends;
     }
 
     public Long getId() {
@@ -88,6 +91,14 @@ public class User implements Serializable {
 
     public void setExtra(String extra) {
         this.extra = extra;
+    }
+
+    public List<Friend> getFriends() {
+        return friends;
+    }
+
+    public void setFriends(List<Friend> friends) {
+        this.friends = friends;
     }
 
 }
