@@ -52,9 +52,4 @@ public class UserController {
         return "user";
     }
 
-    /*@RequestMapping(value = "/user")
-    public Iterable<User> findUsersByCriteria(@RequestParam("name") String name) {
-        return userRepository.getUserRepository().findAll((root, query, cb) -> cb.equal(root.get("name"), name));
-    }*/
-
 }
