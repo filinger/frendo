@@ -15,21 +15,35 @@
         </div>
 
         <div>
-
-            <h2 th:text="#{title.find}">title.find</h2>
-
-            <form th:action="@{/user}" th:object="${user}" th:method="post">
+            <form th:action="@{/user/}">
 
                 <fieldset>
-
-                    <legend th:text="#{find.user}">find.user</legend>
 
                     <div>
                         <label for="id">
                             <span th:text="#{find.user.id}">find.user.id</span>
                         </label>
-                        <input type="text" th:field="*{id}" />
+                        <input type="text" id="id" name="id" />
                     </div>
+
+                    <div class="submit">
+                        <button type="submit" th:text="#{find.user.profile.by.id}">find.user.profile.by.id</button>
+                    </div>
+
+                </fieldset>
+
+            </form>
+        </div>
+
+        <div>
+            <h2 th:text="#{title.find}">title.find</h2>
+
+            <form th:action="@{/user}" th:object="${userRequestObject}" th:method="post">
+
+                <fieldset>
+
+                    <legend th:text="#{find.user}">find.user</legend>
+
                     <div>
                         <label for="userSurname">
                             <span th:text="#{find.user.surname}">find.user.surname</span>
@@ -68,11 +82,9 @@
                 </fieldset>
 
             </form>
-
         </div>
 
         <div class="userInfo" th:unless="${#lists.isEmpty(users)}">
-
             <h2 th:text="#{title.user.info}">title.user.info</h2>
 
             <table>
@@ -110,7 +122,6 @@
                     </tr>
                 </tbody>
             </table>
-
         </div>
 
         <div>

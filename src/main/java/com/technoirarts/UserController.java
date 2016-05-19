@@ -21,45 +21,36 @@ public class UserController {
     private Stopwatch stopwatch = new Stopwatch();
 
     @RequestMapping(value = "/user")
-    public String showForm(Model model) {
+    public String showForm(@RequestParam("id") Long id, Model model) {
         stopwatch.start();
+        model.addAttribute("users", cachedUserRepository.findOne(id));
         model.addAttribute("userRequestObject", new UserRequestObject());
         model.addAttribute("elapsed", stopwatch.elapsed());
+        LOG.info("Took about {} ms.", stopwatch.elapsed());
         return "user";
     }
 
     @RequestMapping(value = "/user", params = "findUser")
     public String showUser(@ModelAttribute UserRequestObject userRequestObject, Model model) {
-        LOG.info("Loading user {}...", userRequestObject.getId());
         stopwatch.start();
         model.addAttribute("users", userRepository.findAll(UserSpecifications.findUsers(
-            userRequestObject.getId(),
             userRequestObject.getSurname(),
             userRequestObject.getName(),
             userRequestObject.getAge(),
             userRequestObject.getCity(),
             userRequestObject.getExtra()
         )));
+        model.addAttribute("elapsed", stopwatch.elapsed());
         LOG.info("Took about {} ms.", stopwatch.elapsed());
         return "user";
-    }
-
-    @RequestMapping(value = "/user/{id}")
-    @ResponseBody
-    public User user(@PathVariable("id") Long id) {
-        LOG.info("Loading user {}...", id);
-        stopwatch.start();
-        User user = cachedUserRepository.findOne(id);
-        LOG.info("Took about {} ms.", stopwatch.elapsed());
-        return user;
     }
 
     @RequestMapping(value = "/user/all")
     public String showAllUsers(Model model) {
         stopwatch.start();
-        Iterable<User> users = cachedUserRepository.findAll();
+        model.addAttribute("users", cachedUserRepository.findAll());
         model.addAttribute("elapsed", stopwatch.elapsed());
-        model.addAttribute("users", users);
+        LOG.info("Took about {} ms.", stopwatch.elapsed());
         return "user_all";
     }
 
