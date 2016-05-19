@@ -28,19 +28,21 @@ public class User implements Serializable {
     @Column(nullable = false)
     private String extra;
 
-    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy="user")
+    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name="customer_id")
     private List<Friend> friends;
 
     public User() {
     }
 
-    public User(Long id, String surname, String name, Integer age, String city, String extra) {
+    public User(Long id, String surname, String name, Integer age, String city, String extra, List<Friend> friends) {
         this.id = id;
         this.surname = surname;
         this.name = name;
         this.age = age;
         this.city = city;
         this.extra = extra;
+        this.friends = friends;
     }
 
     public Long getId() {

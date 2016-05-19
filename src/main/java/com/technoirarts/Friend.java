@@ -13,7 +13,6 @@ public class Friend implements Serializable {
     private Long Id;
 
     @ManyToOne(fetch= FetchType.LAZY)
-    @JoinColumn(name="id")
     private User user;
 
     public Long getId() {
