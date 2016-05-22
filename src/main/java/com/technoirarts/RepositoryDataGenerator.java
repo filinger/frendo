@@ -4,9 +4,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -27,18 +31,23 @@ public class RepositoryDataGenerator {
     private static final Logger LOG = LoggerFactory.getLogger(RepositoryDataGenerator.class);
     private static final Random RAND = new Random();
 
-    @Value("${frendo.generator.userAmount}")
-    private Integer userAmount;
-
     @Autowired
     private UserRepository userRepository;
     @Autowired
     private SolrUserRepository solrUserRepository;
 
+    @Value("${frendo.generator.extraText}")
+    private Resource extraText;
+    @Value("${frendo.generator.userAmount}")
+    private Integer userAmount;
+
     private Stopwatch stopwatch = new Stopwatch();
+    private List<String> extraLines = new ArrayList<>();
 
     @PostConstruct
-    private void generateAndSave() {
+    private void generateAndSave() throws IOException {
+        extraLines = readExtraLines();
+
         LOG.info("Generating {} users...", userAmount);
         stopwatch.start();
         List<User> users = generateUsers();
@@ -48,6 +57,21 @@ public class RepositoryDataGenerator {
 
         saveToDB(users);
         saveToSolr(solrUsers);
+    }
+
+    private List<String> readExtraLines() throws IOException {
+        List<String> lines = new ArrayList<>();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(extraText.getInputStream()));
+        while (true) {
+            String line = reader.readLine();
+            if (line == null) {
+                break;
+            }
+            if (!line.isEmpty()) {
+                lines.add(line);
+            }
+        }
+        return lines;
     }
 
     private List<SolrUser> generateSolrUsers(List<User> users) {
@@ -98,7 +122,7 @@ public class RepositoryDataGenerator {
         String name = getRandomName();
         Integer age = (RAND.nextInt(61) + 10);
         String city = getRandomName();
-        String extra = getRandomName() + getRandomName() + getRandomName();
+        String extra = getRandomItem(extraLines);
         List<Long> friendIds = new ArrayList<>();
         return new User(null, surname, name, age, city, extra, friendIds);
     }
@@ -111,5 +135,9 @@ public class RepositoryDataGenerator {
 
     private <T> T getRandomItem(T[] items) {
         return items[RAND.nextInt(items.length)];
+    }
+
+    private <T> T getRandomItem(List<T> items) {
+        return items.get(RAND.nextInt(items.size()));
     }
 }
