@@ -28,21 +28,20 @@ public class User implements Serializable {
     @Column(nullable = false)
     private String extra;
 
-    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name="friend_id")
-    private List<Friend> friends;
+    @ElementCollection(fetch=FetchType.EAGER)
+    private List<Long> friendIds;
 
     public User() {
     }
 
-    public User(Long id, String surname, String name, Integer age, String city, String extra, List<Friend> friends) {
+    public User(Long id, String surname, String name, Integer age, String city, String extra, List<Long> friendIds) {
         this.id = id;
         this.surname = surname;
         this.name = name;
         this.age = age;
         this.city = city;
         this.extra = extra;
-        this.friends = friends;
+        this.friendIds = friendIds;
     }
 
     public Long getId() {
@@ -93,12 +92,12 @@ public class User implements Serializable {
         this.extra = extra;
     }
 
-    public List<Friend> getFriends() {
-        return friends;
+    public List<Long> getFriendIds() {
+        return friendIds;
     }
 
-    public void setFriends(List<Friend> friends) {
-        this.friends = friends;
+    public void setFriendIds(List<Long> friendIds) {
+        this.friendIds = friendIds;
     }
 
 }
