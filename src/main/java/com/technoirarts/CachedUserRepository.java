@@ -8,7 +8,9 @@ import org.springframework.data.redis.RedisConnectionFailureException;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
@@ -19,7 +21,8 @@ public class CachedUserRepository {
 
     @Autowired
     private UserRepository userRepository;
-
+    @Autowired
+    private SolrUserRepository solrUserRepository;
     @Autowired
     private RedisTemplate<Long, User> redisTemplate;
 
@@ -30,7 +33,6 @@ public class CachedUserRepository {
     private Stopwatch retryStopwatch = new Stopwatch();
 
     public User findOne(Long id) {
-
         if (id == null) {
             return null;
         }
@@ -47,7 +49,6 @@ public class CachedUserRepository {
         }
 
         return null;
-
     }
 
     // TODO: cache all users via Redis scan/keys iterator?
@@ -55,7 +56,31 @@ public class CachedUserRepository {
         return userRepository.findAll();
     }
 
-    public Map<Long, User> findAll(User user) {
+    private List<User> findAll(Iterable<Long> ids) {
+        List<User> users = new ArrayList<>();
+        for (Long id : ids) {
+            User user = findOne(id);
+            if (user != null) {
+                users.add(user);
+            }
+        }
+        return users;
+    }
+
+    public List<User> findAll(UserRequestObject userRequestObject) {
+        Iterable<SolrUser> solrUsers = solrUserRepository.findByName(userRequestObject.getName());
+        List<User> users = new ArrayList<>();
+        for (SolrUser solrUser : solrUsers) {
+            Long userId = solrUser.getUserId();
+            User user = findOne(userId);
+            if (user != null) {
+                users.add(user);
+            }
+        }
+        return users;
+    }
+
+    public Map<Long, User> findFriends(User user) {
         Map<Long, User> friends = new HashMap<>();
         if (user == null) {
             return friends;
@@ -66,7 +91,7 @@ public class CachedUserRepository {
         return friends;
     }
 
-    public Map<Long, User> findAll(Iterable<User> users) {
+    public Map<Long, User> findFriends(Iterable<User> users) {
         Map<Long, User> friends = new HashMap<>();
         if (users == null) {
             return friends;

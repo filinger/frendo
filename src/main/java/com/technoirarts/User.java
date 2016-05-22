@@ -1,12 +1,9 @@
 package com.technoirarts;
 
-import org.apache.solr.client.solrj.beans.Field;
-
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.io.Serializable;
 import java.util.List;
@@ -17,7 +14,6 @@ public class User implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue
     private Long id;
 
     @Column(nullable = false)
@@ -33,7 +29,6 @@ public class User implements Serializable {
     private String city;
 
     @Column(nullable = false)
-    @Field
     private String extra;
 
     @ElementCollection(fetch = FetchType.EAGER)

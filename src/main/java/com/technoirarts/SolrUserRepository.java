@@ -2,7 +2,7 @@ package com.technoirarts;
 
 import org.springframework.data.solr.repository.SolrCrudRepository;
 
-public interface SolrUserRepository extends SolrCrudRepository<User, Long> {
+public interface SolrUserRepository extends SolrCrudRepository<SolrUser, String> {
 
-    Iterable<User> findByExtra(String extra);
+    Iterable<SolrUser> findByName(String name);
 }
