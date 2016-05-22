@@ -118,10 +118,10 @@
                                     <th th:text="#{friend.name}">name</th>
                                     <th th:text="#{friend.link}">link</th>
                                 </tr>
-                                <tr th:each="friend : ${user.friends}">
-                                    <td th:text="${friend.user.surname}"></td>
-                                    <td th:text="${friend.user.name}"></td>
-                                    <td><a th:href="@{/user/?id={id}(id=${friend.user.id})}">link</a></td>
+                                <tr th:each="friendId : ${user.friendIds}">
+                                    <!--<td th:text="${friend.user.surname}"></td>
+                                    <td th:text="${friend.user.name}"></td>-->
+                                    <td><a th:href="@{/user/?id={id}(id=${friendId})}">link</a></td>
                                 </tr>
                                 </tbody>
                             </table>
