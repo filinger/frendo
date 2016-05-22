@@ -20,7 +20,7 @@ public class SolrUser {
     @Field("name_s")
     private String name;
 
-    @Field("age")
+    @Field("age_i")
     private Integer age;
 
     @Field("city_s")
