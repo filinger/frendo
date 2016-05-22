@@ -17,10 +17,14 @@ public class SolrUser {
     @Field("name_s")
     private String name;
 
+    @Field("extra_en")
+    private String extra;
+
     static public SolrUser fromUser(User user) {
         SolrUser solrUser = new SolrUser();
         solrUser.setUserId(user.getId());
         solrUser.setName(user.getName());
+        solrUser.setExtra(user.getExtra());
         return solrUser;
     }
 
@@ -46,5 +50,13 @@ public class SolrUser {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getExtra() {
+        return extra;
+    }
+
+    public void setExtra(String extra) {
+        this.extra = extra;
     }
 }
