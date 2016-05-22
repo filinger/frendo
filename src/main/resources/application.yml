@@ -1,4 +1,4 @@
-frendo.generator.userAmount: 10000
+frendo.generator.userAmount: 1000
 frendo.cache.retryTimeoutMillis: 10000
 
 spring.jpa.properties:

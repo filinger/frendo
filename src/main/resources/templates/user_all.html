@@ -32,29 +32,29 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="user : ${users}">
-                    <td th:text="${user.surname}"></td>
-                    <td th:text="${user.name}"></td>
-                    <td th:text="${user.age}"></td>
-                    <td th:text="${user.city}"></td>
-                    <td th:text="${user.extra}"></td>
-                    <td>
-                        <table th:unless="${#maps.isEmpty(friends)}">
-                            <tbody>
-                            <tr>
-                                <th th:text="#{friend.surname}">surname</th>
-                                <th th:text="#{friend.name}">name</th>
-                                <th th:text="#{friend.link}">link</th>
-                            </tr>
-                            <tr th:each="friendId : ${user.friendIds}">
-                                <td th:text="${friends.get(friendId).surname}"></td>
-                                <td th:text="${friends.get(friendId).name}"></td>
-                                <td><a th:href="@{/user/?id={id}(id=${friendId})}">link</a></td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </td>
-                </tr>
+                    <tr th:each="user : ${users}">
+                        <td th:text="${user.surname}"></td>
+                        <td th:text="${user.name}"></td>
+                        <td th:text="${user.age}"></td>
+                        <td th:text="${user.city}"></td>
+                        <td th:text="${user.extra}"></td>
+                        <td>
+                            <table>
+                                <tbody>
+                                <tr>
+                                    <th th:text="#{friend.surname}">surname</th>
+                                    <th th:text="#{friend.name}">name</th>
+                                    <th th:text="#{friend.link}">link</th>
+                                </tr>
+                                <tr th:if="${friends.get(friendId) != null}" th:each="friendId : ${user.friendIds}">
+                                    <td th:text="${friends.get(friendId).surname}"></td>
+                                    <td th:text="${friends.get(friendId).name}"></td>
+                                    <td><a th:href="@{/user/?id={id}(id=${friends.get(friendId).id})}">link</a></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         </div>
