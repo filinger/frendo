@@ -3,10 +3,13 @@ package com.technoirarts;
 import org.apache.solr.client.solrj.beans.Field;
 
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 public class User implements Serializable {
@@ -33,16 +36,20 @@ public class User implements Serializable {
     @Field
     private String extra;
 
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<Long> friendIds;
+
     public User() {
     }
 
-    public User(Long id, String surname, String name, Integer age, String city, String extra) {
+    public User(Long id, String surname, String name, Integer age, String city, String extra, List<Long> friendIds) {
         this.id = id;
         this.surname = surname;
         this.name = name;
         this.age = age;
         this.city = city;
         this.extra = extra;
+        this.friendIds = friendIds;
     }
 
     public Long getId() {
@@ -93,4 +100,11 @@ public class User implements Serializable {
         this.extra = extra;
     }
 
+    public List<Long> getFriendIds() {
+        return friendIds;
+    }
+
+    public void setFriendIds(List<Long> friendIds) {
+        this.friendIds = friendIds;
+    }
 }

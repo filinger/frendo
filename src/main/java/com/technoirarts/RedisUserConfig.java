@@ -10,7 +10,7 @@ import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.stereotype.Component;
 
 @Component
-public class RedisCache {
+public class RedisUserConfig {
 
     @Bean
     public GenericToStringSerializer<Long> longRedisSerializer() {
