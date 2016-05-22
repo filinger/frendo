@@ -68,7 +68,7 @@ public class CachedUserRepository {
     }
 
     public List<User> findAll(UserRequestObject userRequestObject) {
-        Iterable<SolrUser> solrUsers = solrUserRepository.findByName(userRequestObject.getName());
+        Iterable<SolrUser> solrUsers = solrUserRepository.findByExtra(userRequestObject.getExtra());
         List<User> users = new ArrayList<>();
         for (SolrUser solrUser : solrUsers) {
             Long userId = solrUser.getUserId();
