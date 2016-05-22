@@ -13,7 +13,8 @@ public class UserRequestObject implements Serializable {
 
     private String surname;
     private String name;
-    private Integer age;
+    private Integer ageFrom;
+    private Integer ageTo;
     private String city;
     private String extra;
 
@@ -33,12 +34,20 @@ public class UserRequestObject implements Serializable {
         this.name = name;
     }
 
-    public Integer getAge() {
-        return age;
+    public Integer getAgeFrom() {
+        return ageFrom;
     }
 
-    public void setAge(Integer age) {
-        this.age = age;
+    public void setAgeFrom(Integer ageFrom) {
+        this.ageFrom = ageFrom;
+    }
+
+    public Integer getAgeTo() {
+        return ageTo;
+    }
+
+    public void setAgeTo(Integer ageTo) {
+        this.ageTo = ageTo;
     }
 
     public String getCity() {
@@ -63,7 +72,12 @@ public class UserRequestObject implements Serializable {
         return (root, query, cb) -> {
             if (!surname.isEmpty()) predicates.add(cb.equal(root.get(User_.surname), surname));
             if (!name.isEmpty()) predicates.add(cb.equal(root.get(User_.name), name));
-            if (age != null) predicates.add(cb.equal(root.get(User_.age), age));
+            if ((ageFrom != null) && (ageTo != null)) {
+                predicates.add(cb.and(
+                    cb.greaterThanOrEqualTo(root.get(User_.age), ageFrom),
+                    cb.lessThanOrEqualTo(root.get(User_.age), ageTo)
+                ));
+            }
             if (!city.isEmpty()) predicates.add(cb.equal(root.get(User_.city), city));
             if (!extra.isEmpty()) predicates.add(cb.equal(root.get(User_.extra), extra));
             return cb.and(predicates.toArray(new Predicate[predicates.size()]));

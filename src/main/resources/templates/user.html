@@ -50,31 +50,35 @@
                     <legend th:text="#{find.user}">find.user</legend>
 
                     <div>
-                        <label for="userSurname">
+                        <label for="surname">
                             <span th:text="#{find.user.surname}">find.user.surname</span>
                         </label>
                         <input type="text" th:field="*{surname}" />
                     </div>
                     <div>
-                        <label for="userName">
+                        <label for="name">
                             <span th:text="#{find.user.name}">find.user.name</span>
                         </label>
                         <input type="text" th:field="*{name}" />
                     </div>
-                    <div>
-                        <label for="userAge">
-                            <span th:text="#{find.user.age}">find.user.age</span>
+                    <div id="ageDiv">
+                        <label for="ageFrom">
+                            <span th:text="#{find.user.age.from}">find.user.age</span>
                         </label>
-                        <input type="text" th:field="*{age}" />
+                        <input type="text" th:field="*{ageFrom}" />
+                        <label for="ageTo" style="width: 60px">
+                            <span th:text="#{find.user.age.to}">find.user.age</span>
+                        </label>
+                        <input type="text" th:field="*{ageTo}" />
                     </div>
                     <div>
-                        <label for="userCity">
+                        <label for="city">
                             <span th:text="#{find.user.city}">find.user.city</span>
                         </label>
                         <input type="text" th:field="*{city}" />
                     </div>
                     <div>
-                        <label for="userExtra">
+                        <label for="extra">
                             <span th:text="#{find.user.extra}">find.user.extra</span>
                         </label>
                         <input type="text" th:field="*{extra}" />
