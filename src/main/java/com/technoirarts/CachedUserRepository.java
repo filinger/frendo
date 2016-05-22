@@ -8,6 +8,10 @@ import org.springframework.data.redis.RedisConnectionFailureException;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Supplier;
 
 @Repository
@@ -51,6 +55,30 @@ public class CachedUserRepository {
     // TODO: cache all users via Redis scan/keys iterator?
     public Iterable<User> findAll() {
         return userRepository.findAll();
+    }
+
+    public Map<Long, User> findAll(User user) {
+        Map<Long, User> friends = new HashMap<>();
+        if (user == null) {
+            return friends;
+        }
+        for (Long fid : user.getFriendIds()) {
+            friends.put(fid, findOne(fid));
+        }
+        return friends;
+    }
+
+    public Map<Long, User> findAll(Iterable<User> users) {
+        Map<Long, User> friends = new HashMap<>();
+        if (users == null) {
+            return friends;
+        }
+        for (User user : users) {
+            for (Long fid : user.getFriendIds()) {
+                friends.put(fid, findOne(fid));
+            }
+        }
+        return friends;
     }
 
     private User tryGetCachedUser(Long id) {
