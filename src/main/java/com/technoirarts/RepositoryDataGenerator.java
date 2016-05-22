@@ -38,19 +38,20 @@ public class RepositoryDataGenerator {
     @PostConstruct
     private void generateUsers() {
         LOG.info("Generating {} users...", userAmount);
+
         stopwatch.start();
-        List<User> users = new ArrayList<>();
         for (int i = 0; i < userAmount - 1; i++) {
-            users.add(generateRandomUser());
+            userRepository.save(generateRandomUser());
         }
+
+        Iterable<User> users = userRepository.findAll();
         for (User user : users) {
             for (int i = 0; i < (RAND.nextInt(5) + 3); i++) {
-                Friend friend = new Friend();
-                friend.setUser(users.get(RAND.nextInt(users.size())));
-                user.getFriends().add(friend);
+                user.getFriendIds().add((long) RAND.nextInt(userAmount));
             }
         }
         userRepository.save(users);
+
         LOG.info("Users generated successfully, took about {} ms.", stopwatch.elapsed());
     }
 
@@ -60,8 +61,8 @@ public class RepositoryDataGenerator {
         Integer age = (RAND.nextInt(61) + 10);
         String city = getRandomName();
         String extra = getRandomName() + getRandomName() + getRandomName();
-        List<Friend> friends = new ArrayList<>();
-        return new User(null, surname, name, age, city, extra, friends);
+        List<Long> friendIds = new ArrayList<>();
+        return new User(null, surname, name, age, city, extra, friendIds);
     }
 
     private String getRandomName() {
