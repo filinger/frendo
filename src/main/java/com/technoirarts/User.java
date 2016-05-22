@@ -1,6 +1,10 @@
 package com.technoirarts;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
 import java.io.Serializable;
 import java.util.List;
 
@@ -10,7 +14,6 @@ public class User implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue
     private Long id;
 
     @Column(nullable = false)
@@ -28,7 +31,7 @@ public class User implements Serializable {
     @Column(nullable = false)
     private String extra;
 
-    @ElementCollection(fetch=FetchType.EAGER)
+    @ElementCollection(fetch = FetchType.EAGER)
     private List<Long> friendIds;
 
     public User() {
@@ -99,5 +102,4 @@ public class User implements Serializable {
     public void setFriendIds(List<Long> friendIds) {
         this.friendIds = friendIds;
     }
-
 }

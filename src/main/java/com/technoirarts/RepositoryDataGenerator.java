@@ -32,27 +32,65 @@ public class RepositoryDataGenerator {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private SolrUserRepository solrUserRepository;
 
     private Stopwatch stopwatch = new Stopwatch();
 
     @PostConstruct
-    private void generateUsers() {
+    private void generateAndSave() {
         LOG.info("Generating {} users...", userAmount);
-
         stopwatch.start();
-        for (int i = 0; i < userAmount - 1; i++) {
-            userRepository.save(generateRandomUser());
-        }
+        List<User> users = generateUsers();
+        List<SolrUser> solrUsers = generateSolrUsers(users);
+        generateFriends(users);
+        LOG.info("Users generated successfully, took about {} ms.", stopwatch.elapsed());
 
-        Iterable<User> users = userRepository.findAll();
+        saveToDB(users);
+        saveToSolr(solrUsers);
+    }
+
+    private List<SolrUser> generateSolrUsers(List<User> users) {
+        List<SolrUser> solrUsers = new ArrayList<>(userAmount);
+        for (User user : users) {
+            SolrUser solrUser = SolrUser.fromUser(user);
+            solrUsers.add(solrUser);
+        }
+        return solrUsers;
+    }
+
+    private List<User> generateUsers() {
+        List<User> users = new ArrayList<>(userAmount);
+        for (int i = 0; i < userAmount; ++i) {
+            User user = generateRandomUser();
+            user.setId((long) i);
+            users.add(user);
+        }
+        return users;
+    }
+
+    private void generateFriends(List<User> users) {
         for (User user : users) {
             for (int i = 0; i < (RAND.nextInt(5) + 3); i++) {
                 user.getFriendIds().add((long) RAND.nextInt(userAmount));
             }
         }
-        userRepository.save(users);
+    }
 
-        LOG.info("Users generated successfully, took about {} ms.", stopwatch.elapsed());
+    private void saveToSolr(List<SolrUser> solrUsers) {
+        LOG.info("Saving to Solr...");
+        stopwatch.start();
+        solrUserRepository.deleteAll();
+        solrUserRepository.save(solrUsers);
+        LOG.info("Saved, took about {} ms.", stopwatch.elapsed());
+    }
+
+    private void saveToDB(List<User> users) {
+        LOG.info("Saving to DB...");
+        stopwatch.start();
+        userRepository.deleteAll();
+        userRepository.save(users);
+        LOG.info("Saved, took about {} ms.", stopwatch.elapsed());
     }
 
     private User generateRandomUser() {
