@@ -111,7 +111,7 @@
                         <td th:text="${user.city}"></td>
                         <td th:text="${user.extra}"></td>
                         <td>
-                            <table>
+                            <table th:unless="${#maps.isEmpty(friends)}">
                                 <tbody>
                                 <tr>
                                     <th th:text="#{friend.surname}">surname</th>
@@ -119,8 +119,8 @@
                                     <th th:text="#{friend.link}">link</th>
                                 </tr>
                                 <tr th:each="friendId : ${user.friendIds}">
-                                    <!--<td th:text="${friend.user.surname}"></td>
-                                    <td th:text="${friend.user.name}"></td>-->
+                                    <td th:text="${friends.get(friendId).surname}"></td>
+                                    <td th:text="${friends.get(friendId).name}"></td>
                                     <td><a th:href="@{/user/?id={id}(id=${friendId})}">link</a></td>
                                 </tr>
                                 </tbody>
