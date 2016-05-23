@@ -1,11 +1,14 @@
 package com.technoirarts;
 
+import org.apache.solr.client.solrj.SolrServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.data.redis.RedisConnectionFailureException;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.solr.core.SolrTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -22,7 +25,8 @@ public class CachedUserRepository {
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    private SolrUserRepository solrUserRepository;
+    private SearchableSolrRepository<SolrUser> searchableUserRepository;
+
     @Autowired
     private RedisTemplate<Long, User> redisTemplate;
 
@@ -31,6 +35,13 @@ public class CachedUserRepository {
 
     private boolean redisAvailable = true;
     private Stopwatch retryStopwatch = new Stopwatch();
+
+    @Bean
+    public SearchableSolrRepository<SolrUser> searchableSolrRepository(SolrServer solrServer) {
+        SolrTemplate solrTemplate = new SolrTemplate(solrServer);
+        solrTemplate.afterPropertiesSet();
+        return new SimpleSearchableSolrRepository<>(solrTemplate, SolrUser.class);
+    }
 
     public User findOne(Long id) {
         if (id == null) {
@@ -68,7 +79,7 @@ public class CachedUserRepository {
     }
 
     public List<User> findAll(UserRequestObject userRequestObject) {
-        Iterable<SolrUser> solrUsers = solrUserRepository.findByExtra(userRequestObject.getExtra());
+        Iterable<SolrUser> solrUsers = searchableUserRepository.search(userRequestObject.buildCriteria());
         List<User> users = new ArrayList<>();
         for (SolrUser solrUser : solrUsers) {
             Long userId = solrUser.getUserId();
