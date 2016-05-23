@@ -1,6 +1,8 @@
 package com.technoirarts;
 
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.solr.core.query.Criteria;
+import org.springframework.data.solr.core.query.SimpleStringCriteria;
 
 import javax.persistence.criteria.Predicate;
 import java.io.Serializable;
@@ -13,7 +15,8 @@ public class UserRequestObject implements Serializable {
 
     private String surname;
     private String name;
-    private Integer age;
+    private Integer ageFrom;
+    private Integer ageTo;
     private String city;
     private String extra;
 
@@ -33,12 +36,20 @@ public class UserRequestObject implements Serializable {
         this.name = name;
     }
 
-    public Integer getAge() {
-        return age;
+    public Integer getAgeFrom() {
+        return ageFrom;
     }
 
-    public void setAge(Integer age) {
-        this.age = age;
+    public void setAgeFrom(Integer ageFrom) {
+        this.ageFrom = ageFrom;
+    }
+
+    public Integer getAgeTo() {
+        return ageTo;
+    }
+
+    public void setAgeTo(Integer ageTo) {
+        this.ageTo = ageTo;
     }
 
     public String getCity() {
@@ -63,10 +74,43 @@ public class UserRequestObject implements Serializable {
         return (root, query, cb) -> {
             if (!surname.isEmpty()) predicates.add(cb.equal(root.get(User_.surname), surname));
             if (!name.isEmpty()) predicates.add(cb.equal(root.get(User_.name), name));
-            if (age != null) predicates.add(cb.equal(root.get(User_.age), age));
+            if ((ageFrom != null) && (ageTo != null)) {
+                predicates.add(cb.and(
+                    cb.greaterThanOrEqualTo(root.get(User_.age), ageFrom),
+                    cb.lessThanOrEqualTo(root.get(User_.age), ageTo)
+                ));
+            }
             if (!city.isEmpty()) predicates.add(cb.equal(root.get(User_.city), city));
             if (!extra.isEmpty()) predicates.add(cb.equal(root.get(User_.extra), extra));
             return cb.and(predicates.toArray(new Predicate[predicates.size()]));
         };
+    }
+
+    public Criteria buildCriteria() {
+        Criteria criteria = new Criteria(Criteria.WILDCARD).expression(Criteria.WILDCARD);
+        if (!surname.isEmpty()) {
+            criteria = criteria.and(new Criteria("surname_s").is(surname));
+        }
+        if (!name.isEmpty()) {
+            criteria = criteria.and(new Criteria("name_s").is(name));
+        }
+        if (ageFrom != null || ageTo != null) {
+            Object ageLowerBound = "*";
+            if (ageFrom != null) {
+                ageLowerBound = ageFrom;
+            }
+            Object ageUpperBound = "*";
+            if (ageTo != null) {
+                ageUpperBound = ageTo;
+            }
+            criteria = criteria.and(new SimpleStringCriteria("age_i:[" + ageLowerBound + " TO " + ageUpperBound + "]"));
+        }
+        if (!city.isEmpty()) {
+            criteria = criteria.and(new Criteria("city_s").startsWith(city));
+        }
+        if (!extra.isEmpty()) {
+            criteria = criteria.and(new Criteria("extra_en").is(extra));
+        }
+        return criteria;
     }
 }

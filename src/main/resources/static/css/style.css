@@ -59,6 +59,11 @@ form div.submit button {
     font-variant: small-caps;
 }
 
+#ageDiv input {
+    width: 40px;
+    float: left;
+}
+
 div.userInfo > table {
     width: 100%;
     border: 1px solid #000;
